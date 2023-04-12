@@ -1,0 +1,26 @@
+project_name: runewidth
+
+env:
+  - GO111MODULE=on
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - main: .
+    binary: runewidth
+    ldflags:
+      - -s -w
+      - -X github.com/kis9a/runewidth/main.Version={{.Version}}
+    env:
+      - CGO_ENABLED=0
+
+archives:
+  - name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    replacements:
+      darwin: darwin
+      linux: linux
+
+release:
+  prerelease: auto
